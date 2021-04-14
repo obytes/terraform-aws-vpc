@@ -11,6 +11,9 @@ A Terraform module to create AWS VPC along with its resources:
 This Module Supports the following validation on Inputs:
  - `cidr_blocks` : A validation to verify the CIDR Block based don AWS requirements, The allowed block size is between a /16 netmask (65,536 IP addresses) and /28 netmask (16 IP addresses).
 
+### Subnet Naming Convention
+A shortcode of the availability group will be appended to the subnet name
+
 ### Scenarios
 
  - NAT Gateways
@@ -41,7 +44,7 @@ This Module Supports the following validation on Inputs:
    - Create custom security group - default scenario
      - `var.create_custom_security_group` is set to true
      - the security group has no ingress rules
-     - the security group allow all egress traffic## Requirements
+     - the security group allow all egress traffic
 
 ## Requirements
 

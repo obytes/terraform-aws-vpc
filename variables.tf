@@ -40,7 +40,7 @@ variable "nat_gateway_per_az" {
 
 variable "enable_internet_gateway" {
   type        = bool
-  default     = true
+  default     = false
   description = <<-EOL
   IGW, This boolean variables controls the creation of Internet Gateway
   For IGW to be created this variable and var.create_public_subnets should set to true
@@ -55,7 +55,7 @@ variable "create_private_subnets" {
 
 variable "create_public_subnets" {
   type        = bool
-  default     = true
+  default     = false
   description = <<-EOL
   Ability to create private subnets in all configured AZs, if this set to true
   the `enable_internet_gateway` should also be true for the subnets to be associated to IGW
@@ -74,7 +74,7 @@ variable "create_custom_security_group" {
 
 variable "cidr_block" {
   type        = string
-  default     = "172.16.0.0/18"
+  default     = null
   description = "VPC CIDR Block, The allowed block size is between a /16 netmask (65,536 IP addresses) and /28 netmask (16 IP addresses)."
   validation {
     condition     = contains((regex("(^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\/((1[6-9])||(2[0-9]))$)", var.cidr_block)), var.cidr_block)
@@ -84,7 +84,7 @@ variable "cidr_block" {
 
 variable "enable_dns_hostnames" {
   type        = bool
-  default     = true
+  default     = false
   description = "A boolean flag to enable/disable DNS hostnames in the VPC. Defaults false."
 }
 
@@ -152,7 +152,7 @@ variable "default_security_group_egress" {
 
 variable "max_subnet_count" {
   type        = number
-  default     = 3
+  default     = 0
   description = "A Number to indicate the max subnets to be created, if not set it will create one subnet/az"
 }
 

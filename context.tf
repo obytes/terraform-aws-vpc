@@ -19,8 +19,8 @@ variable "context" {
   type = any
   default = {
     enabled                = true
-    environment            = "qa"
-    project_name           = "on-cost"
+    environment            = null
+    project_name           = null
     region                 = null
     name                   = null
     delimiter              = null
