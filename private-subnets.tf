@@ -21,3 +21,33 @@ resource "aws_subnet" "private" {
   "Name", join(module.private_label.delimiter, [module.private_label.id,  count.index])
   ))
 }
+
+# There are as many route_table as local.nat_gateway_count
+resource "aws_route_table" "private" {
+  count = local.enabled && local.private_subnet_count > 0 ? local.nat_gateway_count : 0
+  vpc_id = aws_vpc._[count.index].id
+
+  tags = merge(module.private_label.tags, map("Name", join(module.private_label.delimiter, [module.private_label.id, "route", count.index])),
+          var.additional_private_route_tags
+  )
+
+}
+
+resource "aws_route" "private_nat_gateway" {
+  count = local.enabled && var.enable_nat_gateway ? local.nat_gateway_count : 0
+
+  route_table_id         = element(aws_route_table.private.*.id, count.index)
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id         = element(aws_nat_gateway._.*.id, count.index)
+
+  timeouts {
+    create = var.route_create_timeout
+    delete = var.route_delete_timeout
+  }
+}
+
+resource "aws_route_table_association" "private" {
+  count = local.enabled && local.private_subnet_count > 0 ? local.private_subnet_count : 0
+  route_table_id = element(aws_route_table.private.*.id, var.single_nat_gateway ? 0 : count.index )
+  subnet_id      = element(aws_subnet.private.*.id, count.index)
+}

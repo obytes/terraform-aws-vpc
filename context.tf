@@ -22,7 +22,7 @@ variable "context" {
     environment = "qa"
     project_name = "on-cost"
     region = null
-    name = "api"
+    name = null
     delimiter = null
     attributes = null
     tags = {}

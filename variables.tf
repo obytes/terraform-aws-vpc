@@ -152,7 +152,7 @@ variable "default_security_group_egress" {
 
 variable "max_subnet_count" {
   type = number
-  default = 0
+  default = 3
   description = "A Number to indicate the max subnets to be created, if not set it will create one subnet/az"
 }
 
@@ -160,4 +160,99 @@ variable "nat_eips_list" {
   type = list(string)
   default = []
   description = "A List, of NAT IPs to be used by the NAT_GW"
+}
+
+variable "manage_default_route_table" {
+  type = bool
+  default = true
+  description = "Should be true, to manage the default route table"
+}
+
+variable "additional_default_route_table_routes" {
+  type = list(map(string))
+  default = []
+  description = <<-EOL
+  List, of routes to be added to the default route table ID
+  Example,
+  [
+    {
+      cidr_block = "172.17.18.19/30" # Required
+      ipv6_cidr_block = "::/0" # Optional
+      destination_prefix_list_id = "pl-0570a1d2d725c16be" # Optional
+      #One of the following target arguments must be supplied:
+      egress_only_gateway_id = ""
+      gateway_id = ""
+      instance_id = ""
+      nat_gateway_id = ""
+      vpc_peering_connection_id = ""
+      vpc_endpoint_id = ""
+      transit_gateway_id = ""
+      network_interface_id = ""
+    }
+  ]
+  EOL
+}
+
+variable "additional_default_route_table_tags" {
+  type = map(string)
+  default = null
+  description = "Additional, map of tags to be added to the `default_route_table` tags"
+}
+
+variable "map_public_ip_on_lunch" {
+  type = bool
+  default = false
+  description = "(Optional) Specify true to indicate that instances launched into the subnet should be assigned a public IP address. Default is false."
+}
+
+variable "additional_public_route_tags" {
+  type = map(string)
+  default = null
+  description = "Additional, map of tags to be added to the public `aws_route_table` tags"
+}
+
+variable "additional_private_route_tags" {
+  type = map(string)
+  default = null
+  description = "Additional, map of tags to be added to the private `aws_route_table` tags"
+}
+
+variable "route_create_timeout" {
+  type = string
+  default = "5m"
+  description = "A timeout for the aws_route_table creation, default is 5m"
+}
+
+variable "route_delete_timeout" {
+  type = string
+  default = "5m"
+  description = "A timeout for the aws_route_table deletion, default is 5m"
+}
+
+variable "vpc_domain_name_servers" {
+  type = list(string)
+  default = ["AmazonProvidedDNS"]
+  description = "(Optional) List of name servers to configure in /etc/resolv.conf. If you want to use the default AWS nameservers you should set this to AmazonProvidedDNS."
+}
+
+variable "vpc_dhcp_domain_name" {
+  type = string
+  default = null
+  description = " (Optional) the suffix domain name to use by default when resolving non Fully Qualified Domain Names. In other words, this is what ends up being the search value in the /etc/resolv.conf file."
+}
+
+variable "vpc_dhcp_ntp_servers" {
+  type = list(string)
+  default = []
+  description = "(Optional) List of NTP servers to configure."
+}
+variable "vpc_dhcp_netbios_name_servers" {
+  type = list(string)
+  default = []
+  description = " (Optional) List of NETBIOS name servers."
+}
+variable "vpc_dhcp_netbios_node_type" {
+  type = number
+  default = null
+  description = "(Optional) The NetBIOS node type (1, 2, 4, or 8). AWS recommends to specify 2 since broadcast and multicast are not supported in their network. For more information about these node types, see RFC 2132."
 }
