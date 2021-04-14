@@ -26,7 +26,7 @@ variable "enable_nat_gateway" {
 
 variable "single_nat_gateway" {
   type = bool
-  default = false
+  default = true
   description = <<-EOL
   Should be true if you want to provision a single shared NAT Gateway across all of your private networks
   EOL
@@ -152,7 +152,7 @@ variable "default_security_group_egress" {
 
 variable "max_subnet_count" {
   type = number
-  default = 2
+  default = 0
   description = "A Number to indicate the max subnets to be created, if not set it will create one subnet/az"
 }
 
