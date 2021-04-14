@@ -14,11 +14,11 @@ resource "aws_subnet" "private" {
   var.cidr_block,
   ceil(log(length(flatten(var.include_all_azs ? data.aws_availability_zones.azs.names : var.azs_list_names)) * 2, 2)),
   count.index)
-  availability_zone = length(var.azs_list_names) > 0 ? element(var.azs_list_names,count.index) : element(data.aws_availability_zones.azs.names,count.index)
+  availability_zone = element(local.availability_zones, count.index )
   vpc_id = join("", aws_vpc._.*.id)
   tags = merge(module.private_label.tags, map("VPC", join("", aws_vpc._.*.id),
   "Availability Zone", length(var.azs_list_names) > 0 ? element(var.azs_list_names,count.index) : element(data.aws_availability_zones.azs.names,count.index),
-  "Name", join(module.private_label.delimiter, [module.private_label.id,  count.index])
+  "Name", join(module.private_label.delimiter, [module.private_label.id,  local.az_map_list_short[local.availability_zones[count.index]]])
   ))
 }
 

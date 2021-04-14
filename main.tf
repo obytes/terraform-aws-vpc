@@ -3,6 +3,7 @@ locals {
   internet_gateway_count = var.enable_internet_gateway && local.enabled && var.create_public_subnets ? 1 : 0
   custom_default_security_group = var.create_custom_security_group && local.enabled ? true : false
   az_name_list = length(flatten(var.azs_list_names)) > 0 ? var.azs_list_names : data.aws_availability_zones.azs.names
+  availability_zones = length(var.azs_list_names) > 0 ? var.azs_list_names : data.aws_availability_zones.azs.names
 }
 
 module "vpc_label" {
@@ -18,7 +19,7 @@ resource "aws_vpc" "_" {
   enable_dns_hostnames = var.enable_dns_hostnames
   enable_dns_support = var.enable_dns_support
   assign_generated_ipv6_cidr_block = var.enable_ipv6_cidr_block
-  tags = module.label.tags
+  tags = module.vpc_label.tags
 }
 
 resource "aws_default_security_group" "_" {
