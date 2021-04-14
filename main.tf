@@ -59,7 +59,7 @@ resource "aws_default_security_group" "_" {
 }
 
 resource "aws_internet_gateway" "_" {
-  count = local.enabled && local.internet_gateway_count
+  count = local.internet_gateway_count
   vpc_id = aws_vpc._[count.index].id
   tags = merge(module.vpc_label.tags, map("VPC", aws_vpc._[count.index].id, "Type", "internet Gateway"))
 }

@@ -43,7 +43,7 @@ This Module Supports the following validation on Inputs:
      - the security group has no ingress rules
      - the security group allow all egress traffic## Requirements
 
-## Required
+## Requirements
 
 | Name | Version |
 |------|---------|
@@ -70,13 +70,22 @@ This Module Supports the following validation on Inputs:
 
 | Name | Type |
 |------|------|
+| [aws_default_route_table._](https://registry.terraform.io/providers/hashicorp/aws/3.35.0/docs/resources/default_route_table) | resource |
 | [aws_default_security_group._](https://registry.terraform.io/providers/hashicorp/aws/3.35.0/docs/resources/default_security_group) | resource |
 | [aws_eip._](https://registry.terraform.io/providers/hashicorp/aws/3.35.0/docs/resources/eip) | resource |
 | [aws_internet_gateway._](https://registry.terraform.io/providers/hashicorp/aws/3.35.0/docs/resources/internet_gateway) | resource |
 | [aws_nat_gateway._](https://registry.terraform.io/providers/hashicorp/aws/3.35.0/docs/resources/nat_gateway) | resource |
+| [aws_route.private_nat_gateway](https://registry.terraform.io/providers/hashicorp/aws/3.35.0/docs/resources/route) | resource |
+| [aws_route.public_internet_gateway](https://registry.terraform.io/providers/hashicorp/aws/3.35.0/docs/resources/route) | resource |
+| [aws_route_table.private](https://registry.terraform.io/providers/hashicorp/aws/3.35.0/docs/resources/route_table) | resource |
+| [aws_route_table.public](https://registry.terraform.io/providers/hashicorp/aws/3.35.0/docs/resources/route_table) | resource |
+| [aws_route_table_association.private](https://registry.terraform.io/providers/hashicorp/aws/3.35.0/docs/resources/route_table_association) | resource |
+| [aws_route_table_association.public](https://registry.terraform.io/providers/hashicorp/aws/3.35.0/docs/resources/route_table_association) | resource |
 | [aws_subnet.private](https://registry.terraform.io/providers/hashicorp/aws/3.35.0/docs/resources/subnet) | resource |
 | [aws_subnet.public](https://registry.terraform.io/providers/hashicorp/aws/3.35.0/docs/resources/subnet) | resource |
 | [aws_vpc._](https://registry.terraform.io/providers/hashicorp/aws/3.35.0/docs/resources/vpc) | resource |
+| [aws_vpc_dhcp_options._](https://registry.terraform.io/providers/hashicorp/aws/3.35.0/docs/resources/vpc_dhcp_options) | resource |
+| [aws_vpc_dhcp_options_association.dhcp-assoc](https://registry.terraform.io/providers/hashicorp/aws/3.35.0/docs/resources/vpc_dhcp_options_association) | resource |
 | [aws_availability_zones.azs](https://registry.terraform.io/providers/hashicorp/aws/3.35.0/docs/data-sources/availability_zones) | data source |
 | [aws_eip._](https://registry.terraform.io/providers/hashicorp/aws/3.35.0/docs/data-sources/eip) | data source |
 
@@ -84,11 +93,15 @@ This Module Supports the following validation on Inputs:
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_additional_default_route_table_routes"></a> [additional\_default\_route\_table\_routes](#input\_additional\_default\_route\_table\_routes) | List, of routes to be added to the default route table ID<br>Example,<br>[<br>  {<br>    cidr\_block = "172.17.18.19/30" # Required<br>    ipv6\_cidr\_block = "::/0" # Optional<br>    destination\_prefix\_list\_id = "pl-0570a1d2d725c16be" # Optional<br>    #One of the following target arguments must be supplied:<br>    egress\_only\_gateway\_id = ""<br>    gateway\_id = ""<br>    instance\_id = ""<br>    nat\_gateway\_id = ""<br>    vpc\_peering\_connection\_id = ""<br>    vpc\_endpoint\_id = ""<br>    transit\_gateway\_id = ""<br>    network\_interface\_id = ""<br>  }<br>] | `list(map(string))` | `[]` | no |
+| <a name="input_additional_default_route_table_tags"></a> [additional\_default\_route\_table\_tags](#input\_additional\_default\_route\_table\_tags) | Additional, map of tags to be added to the `default_route_table` tags | `map(string)` | `null` | no |
+| <a name="input_additional_private_route_tags"></a> [additional\_private\_route\_tags](#input\_additional\_private\_route\_tags) | Additional, map of tags to be added to the private `aws_route_table` tags | `map(string)` | `null` | no |
+| <a name="input_additional_public_route_tags"></a> [additional\_public\_route\_tags](#input\_additional\_public\_route\_tags) | Additional, map of tags to be added to the public `aws_route_table` tags | `map(string)` | `null` | no |
 | <a name="input_additional_tags"></a> [additional\_tags](#input\_additional\_tags) | Additional Tags, tags which can be accessed by module.<name>.tags\_as\_list not added to <module>.<name>.<tags> | `map(string)` | `{}` | no |
 | <a name="input_attributes"></a> [attributes](#input\_attributes) | A list of attributes e.g. `private`, `shared`, `cost_center` | `list(string)` | `null` | no |
 | <a name="input_azs_list_names"></a> [azs\_list\_names](#input\_azs\_list\_names) | A list to include all the AZs you would like to configure such as `us-east-1a`, `us-east-1b` | `list(string)` | `[]` | no |
 | <a name="input_cidr_block"></a> [cidr\_block](#input\_cidr\_block) | VPC CIDR Block, The allowed block size is between a /16 netmask (65,536 IP addresses) and /28 netmask (16 IP addresses). | `string` | `"172.16.0.0/18"` | no |
-| <a name="input_context"></a> [context](#input\_context) | n/a | `any` | <pre>{<br>  "additional_tags": {},<br>  "attributes": [],<br>  "delimiter": null,<br>  "enabled": true,<br>  "environment": "qa",<br>  "name": "api",<br>  "prefix_length_limit": 0,<br>  "prefix_order": [<br>    "environment",<br>    "project_name",<br>    "region",<br>    "name",<br>    "attributes"<br>  ],<br>  "project_name": "on-cost",<br>  "random_string": null,<br>  "regex_substitute_chars": null,<br>  "region": null,<br>  "tag_key_case": "title",<br>  "tag_value_case": "lower",<br>  "tags": {}<br>}</pre> | no |
+| <a name="input_context"></a> [context](#input\_context) | n/a | `any` | <pre>{<br>  "additional_tags": {},<br>  "attributes": [],<br>  "delimiter": null,<br>  "enabled": true,<br>  "environment": "qa",<br>  "name": null,<br>  "prefix_length_limit": 0,<br>  "prefix_order": [<br>    "environment",<br>    "project_name",<br>    "region",<br>    "name",<br>    "attributes"<br>  ],<br>  "project_name": "on-cost",<br>  "random_string": null,<br>  "regex_substitute_chars": null,<br>  "region": null,<br>  "tag_key_case": "title",<br>  "tag_value_case": "lower",<br>  "tags": {}<br>}</pre> | no |
 | <a name="input_create_custom_security_group"></a> [create\_custom\_security\_group](#input\_create\_custom\_security\_group) | Boolean, to enable the creation of a custom default\_security\_group<br>if set to `false` the AWS default VPC security rule will be applied, for more reference https://docs.aws.amazon.com/vpc/latest/userguide/VPC_SecurityGroups.html#DefaultSecurityGroup<br>if set to `true` a new default security group will be created with only `egress` traffic allowed | `bool` | `true` | no |
 | <a name="input_create_private_subnets"></a> [create\_private\_subnets](#input\_create\_private\_subnets) | Ability to create private subnets in all configured AZs | `bool` | `true` | no |
 | <a name="input_create_public_subnets"></a> [create\_public\_subnets](#input\_create\_public\_subnets) | Ability to create private subnets in all configured AZs, if this set to true<br>the `enable_internet_gateway` should also be true for the subnets to be associated to IGW | `bool` | `true` | no |
@@ -103,7 +116,9 @@ This Module Supports the following validation on Inputs:
 | <a name="input_enabled"></a> [enabled](#input\_enabled) | A boolean to enable or disable tagging/labeling module | `string` | `null` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment, the environment name such as 'stg', 'prd', 'dev' | `string` | `null` | no |
 | <a name="input_include_all_azs"></a> [include\_all\_azs](#input\_include\_all\_azs) | Boolean, weather to include all Availability Zones in the region where the provider is running<br>Default is `true`, set this to `false` if you would like to have specific azs | `bool` | `true` | no |
-| <a name="input_max_subnet_count"></a> [max\_subnet\_count](#input\_max\_subnet\_count) | A Number to indicate the max subnets to be created, if not set it will create one subnet/az | `number` | `0` | no |
+| <a name="input_manage_default_route_table"></a> [manage\_default\_route\_table](#input\_manage\_default\_route\_table) | Should be true, to manage the default route table | `bool` | `true` | no |
+| <a name="input_map_public_ip_on_lunch"></a> [map\_public\_ip\_on\_lunch](#input\_map\_public\_ip\_on\_lunch) | (Optional) Specify true to indicate that instances launched into the subnet should be assigned a public IP address. Default is false. | `bool` | `false` | no |
+| <a name="input_max_subnet_count"></a> [max\_subnet\_count](#input\_max\_subnet\_count) | A Number to indicate the max subnets to be created, if not set it will create one subnet/az | `number` | `3` | no |
 | <a name="input_name"></a> [name](#input\_name) | The name of the service/solution such as vpc, ec2 | `string` | `null` | no |
 | <a name="input_nat_eips_list"></a> [nat\_eips\_list](#input\_nat\_eips\_list) | A List, of NAT IPs to be used by the NAT\_GW | `list(string)` | `[]` | no |
 | <a name="input_nat_gateway_per_az"></a> [nat\_gateway\_per\_az](#input\_nat\_gateway\_per\_az) | Should be true if you want only one NAT Gateway per availability zone. | `bool` | `false` | no |
@@ -113,6 +128,8 @@ This Module Supports the following validation on Inputs:
 | <a name="input_random_string"></a> [random\_string](#input\_random\_string) | A Random string, that will be appended to `id` in case of using `prefix_length_limit`<br>Using the default value which is `null`, the string will be created using the `random` terraform provider | `string` | `null` | no |
 | <a name="input_regex_substitute_chars"></a> [regex\_substitute\_chars](#input\_regex\_substitute\_chars) | a regex to replace empty chars in `project_name`, `environment`, `region` and, `name`<br>defaults to `"\[a-zA-Z0-9]\"`, replacing any chars other than chars and digits | `string` | `null` | no |
 | <a name="input_region"></a> [region](#input\_region) | Environment name such as us-east-1, ap-west-1, eu-central-1 | `string` | `"us-east-1"` | no |
+| <a name="input_route_create_timeout"></a> [route\_create\_timeout](#input\_route\_create\_timeout) | A timeout for the aws\_route\_table creation, default is 5m | `string` | `"5m"` | no |
+| <a name="input_route_delete_timeout"></a> [route\_delete\_timeout](#input\_route\_delete\_timeout) | A timeout for the aws\_route\_table deletion, default is 5m | `string` | `"5m"` | no |
 | <a name="input_single_nat_gateway"></a> [single\_nat\_gateway](#input\_single\_nat\_gateway) | Should be true if you want to provision a single shared NAT Gateway across all of your private networks | `bool` | `true` | no |
 | <a name="input_tag_key_case"></a> [tag\_key\_case](#input\_tag\_key\_case) | The letter case of output tag keys<br>Possible values are `lower', `upper` and `title`<br>defaults to `title`<br>` | `string` | `null` | no |
 | <a name="input_tag_value_case"></a> [tag\_value\_case](#input\_tag\_value\_case) | The letter case of output tag values<br>Possible values are `lower', `upper` and `title`<br>defaults to `lower`<br>` | `string` | `null` | no |
