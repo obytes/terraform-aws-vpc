@@ -7,10 +7,9 @@ locals {
 }
 
 module "vpc_label" {
-  source        = "github.com/obytes/terraform-aws-tag.git?ref=v1.0.1"
-  random_string = module.label.random_string
-  attributes    = ["vpc"]
-  context       = module.label.context
+  source     = "github.com/obytes/terraform-aws-tag.git?ref=v1.0.5"
+  attributes = ["vpc"]
+  context    = module.label.context
 }
 
 resource "aws_vpc" "_" {

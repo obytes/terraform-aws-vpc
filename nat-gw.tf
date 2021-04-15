@@ -6,10 +6,9 @@ locals {
 }
 
 module "nat_label" {
-  source        = "github.com/obytes/terraform-aws-tag.git?ref=v1.0.1"
-  attributes    = ["nat"]
-  random_string = module.label.random_string
-  context       = module.label.context
+  source     = "github.com/obytes/terraform-aws-tag.git?ref=v1.0.5"
+  attributes = ["nat"]
+  context    = module.label.context
 }
 
 resource "aws_eip" "_" {

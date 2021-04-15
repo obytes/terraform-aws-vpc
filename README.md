@@ -7,6 +7,32 @@ A Terraform module to create AWS VPC along with its resources:
  - NAT Gateway(s) and Internet Gateways
  - Public and Private Subnets
 
+### Example
+
+Below is an example how to call and use the module, kindly check the example folder for more detailed output
+
+```hcl 
+module "example1" {
+  source                  = "github.com/obytes/terraform-aws-vpc.git?ref=v1.0.0"
+  environment             = "qa"
+  project_name            = "on-cost"
+  cidr_block              = "172.16.0.0/18"
+  enable_dns_hostnames    = true
+  enable_nat_gateway      = true
+  enable_internet_gateway = true
+  create_public_subnets   = true
+  max_subnet_count        = 3
+  single_nat_gateway      = true
+  azs_list_names          = ["us-east-1f", "us-east-1d", "us-east-1e"]
+  additional_default_route_table_tags = {
+    Managed = "Terraform"
+    Default = "Yes"
+  }
+
+}
+
+```
+
 ### Validation
 This Module Supports the following validation on Inputs:
  - `cidr_blocks` : A validation to verify the CIDR Block based don AWS requirements, The allowed block size is between a /16 netmask (65,536 IP addresses) and /28 netmask (16 IP addresses).
@@ -147,8 +173,17 @@ A shortcode of the availability group will be appended to the subnet name
 
 | Name | Description |
 |------|-------------|
-| <a name="output_enabled"></a> [enabled](#output\_enabled) | n/a |
-| <a name="output_id"></a> [id](#output\_id) | n/a |
-| <a name="output_nat_gateway_count"></a> [nat\_gateway\_count](#output\_nat\_gateway\_count) | n/a |
-| <a name="output_random_string"></a> [random\_string](#output\_random\_string) | n/a |
-| <a name="output_tags"></a> [tags](#output\_tags) | n/a |
+| <a name="output_availability_zones"></a> [availability\_zones](#output\_availability\_zones) | List of Availability Zones where subnets were created |
+| <a name="output_elastc_ips"></a> [elastc\_ips](#output\_elastc\_ips) | AWS eip public ips |
+| <a name="output_nat_gw_ids"></a> [nat\_gw\_ids](#output\_nat\_gw\_ids) | aws nat gateway id(s) |
+| <a name="output_nat_ips"></a> [nat\_ips](#output\_nat\_ips) | IP Addresses in use for NAT |
+| <a name="output_prv_route_table_ids"></a> [prv\_route\_table\_ids](#output\_prv\_route\_table\_ids) | private route table ids |
+| <a name="output_prv_subnet_cidrs"></a> [prv\_subnet\_cidrs](#output\_prv\_subnet\_cidrs) | Private Subnet cidr\_blocks |
+| <a name="output_prv_subnet_ids"></a> [prv\_subnet\_ids](#output\_prv\_subnet\_ids) | Private Subnet IDs |
+| <a name="output_pub_route_table_ids"></a> [pub\_route\_table\_ids](#output\_pub\_route\_table\_ids) | Public route table ids |
+| <a name="output_pub_subnet_cidrs"></a> [pub\_subnet\_cidrs](#output\_pub\_subnet\_cidrs) | Public Subnet cidr\_blocks |
+| <a name="output_pub_subnet_ids"></a> [pub\_subnet\_ids](#output\_pub\_subnet\_ids) | Public Subnet IDs |
+| <a name="output_vpc_cidr_block"></a> [vpc\_cidr\_block](#output\_vpc\_cidr\_block) | CIDR Block of the VPC |
+| <a name="output_vpc_dhcp_dns_list"></a> [vpc\_dhcp\_dns\_list](#output\_vpc\_dhcp\_dns\_list) | n/a |
+| <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | VPC ID |
+| <a name="output_vpc_sg_id"></a> [vpc\_sg\_id](#output\_vpc\_sg\_id) | n/a |
