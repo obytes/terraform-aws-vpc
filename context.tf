@@ -59,7 +59,7 @@ variable "enabled" {
 
 variable "region" {
   type        = string
-  default     = "us-east-1"
+  default     = null
   description = "Environment name such as us-east-1, ap-west-1, eu-central-1"
 
   validation {
