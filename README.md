@@ -13,9 +13,10 @@ Below is an example how to call and use the module, kindly check the example fol
 
 ```hcl 
 module "example1" {
-  source                  = "github.com/obytes/terraform-aws-vpc.git?ref=v1.0.0"
+  source                  = "github.com/obytes/terraform-aws-vpc.git?ref=v1.0.1"
   environment             = "qa"
   project_name            = "on-cost"
+  region                  = "eu-west-2"
   cidr_block              = "172.16.0.0/18"
   enable_dns_hostnames    = true
   enable_nat_gateway      = true
@@ -23,7 +24,6 @@ module "example1" {
   create_public_subnets   = true
   max_subnet_count        = 3
   single_nat_gateway      = true
-  azs_list_names          = ["us-east-1f", "us-east-1d", "us-east-1e"]
   additional_default_route_table_tags = {
     Managed = "Terraform"
     Default = "Yes"
@@ -156,7 +156,7 @@ A shortcode of the availability group will be appended to the subnet name
 | <a name="input_project_name"></a> [project\_name](#input\_project\_name) | The project name or organization name, could be fullName or abbreviation such as `ex` | `string` | `null` | no |
 | <a name="input_random_string"></a> [random\_string](#input\_random\_string) | A Random string, that will be appended to `id` in case of using `prefix_length_limit`<br>Using the default value which is `null`, the string will be created using the `random` terraform provider | `string` | `null` | no |
 | <a name="input_regex_substitute_chars"></a> [regex\_substitute\_chars](#input\_regex\_substitute\_chars) | a regex to replace empty chars in `project_name`, `environment`, `region` and, `name`<br>defaults to `"\[a-zA-Z0-9]\"`, replacing any chars other than chars and digits | `string` | `null` | no |
-| <a name="input_region"></a> [region](#input\_region) | Environment name such as us-east-1, ap-west-1, eu-central-1 | `string` | `"us-east-1"` | no |
+| <a name="input_region"></a> [region](#input\_region) | Environment name such as us-east-1, ap-west-1, eu-central-1 | `string` | `null` | no |
 | <a name="input_route_create_timeout"></a> [route\_create\_timeout](#input\_route\_create\_timeout) | A timeout for the aws\_route\_table creation, default is 5m | `string` | `"5m"` | no |
 | <a name="input_route_delete_timeout"></a> [route\_delete\_timeout](#input\_route\_delete\_timeout) | A timeout for the aws\_route\_table deletion, default is 5m | `string` | `"5m"` | no |
 | <a name="input_single_nat_gateway"></a> [single\_nat\_gateway](#input\_single\_nat\_gateway) | Should be true if you want to provision a single shared NAT Gateway across all of your private networks | `bool` | `true` | no |

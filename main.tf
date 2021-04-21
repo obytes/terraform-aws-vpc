@@ -25,7 +25,7 @@ resource "aws_default_security_group" "_" {
   count  = local.custom_default_security_group ? 1 : 0
   vpc_id = aws_vpc._[count.index].id
 
-  tags = merge(module.label.tags, map("Type", "Default Security Group", "VPC", join("", aws_vpc._.*.id)))
+  tags = merge(module.label.tags, tomap({ "Type" = "Default Security Group", "VPC" = join("", aws_vpc._.*.id) }))
 
   dynamic "ingress" {
     for_each = var.default_security_group_ingress
@@ -61,7 +61,7 @@ resource "aws_default_security_group" "_" {
 resource "aws_internet_gateway" "_" {
   count  = local.internet_gateway_count
   vpc_id = aws_vpc._[count.index].id
-  tags   = merge(module.vpc_label.tags, map("VPC", aws_vpc._[count.index].id, "Type", "internet Gateway"))
+  tags   = merge(module.vpc_label.tags, tomap({ "VPC" = aws_vpc._[count.index].id, "Type" = "internet Gateway" }))
 }
 
 resource "aws_default_route_table" "_" {
@@ -84,7 +84,7 @@ resource "aws_default_route_table" "_" {
     }
   }
 
-  tags = merge(module.vpc_label.tags, map("Name", join(module.vpc_label.delimiter, [module.vpc_label.id, "default-route"])),
+  tags = merge(module.vpc_label.tags, tomap({ "Name" = join(module.vpc_label.delimiter, [module.vpc_label.id, "default-route"]) }),
     var.additional_default_route_table_tags
   )
 }
@@ -97,7 +97,7 @@ resource "aws_vpc_dhcp_options" "_" {
   netbios_name_servers = var.vpc_dhcp_netbios_name_servers
   netbios_node_type    = var.vpc_dhcp_netbios_node_type
 
-  tags = merge(module.vpc_label.tags, map("Name", join(module.vpc_label.delimiter, [module.vpc_label.id, "dhcp-ops"])))
+  tags = merge(module.vpc_label.tags, tomap({ "Name" = join(module.vpc_label.delimiter, [module.vpc_label.id, "dhcp-ops"]) }))
 }
 
 resource "aws_vpc_dhcp_options_association" "dhcp-assoc" {

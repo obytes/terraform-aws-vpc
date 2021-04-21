@@ -14,14 +14,14 @@ module "nat_label" {
 resource "aws_eip" "_" {
   count = local.enabled ? local.nat_gateway_eip_count : 0
   vpc   = true
-  tags  = merge(module.nat_label.tags, map("Name", join(module.nat_label.delimiter, [module.nat_label.id, count.index])))
+  tags  = merge(module.nat_label.tags, tomap({ "Name" = join(module.nat_label.delimiter, [module.nat_label.id, count.index]) }))
 }
 
 resource "aws_nat_gateway" "_" {
   count         = local.enabled && var.enable_nat_gateway ? local.nat_gateway_count : 0
   allocation_id = element(local.eip_allocation_ids, count.index)
   subnet_id     = element(aws_subnet.public.*.id, count.index)
-  tags          = merge(module.nat_label.tags, map("Name", join(module.nat_label.delimiter, [module.nat_label.id, count.index])))
+  tags          = merge(module.nat_label.tags, tomap({ "Name" = join(module.nat_label.delimiter, [module.nat_label.id, count.index]) }))
 
   lifecycle {
     create_before_destroy = true
