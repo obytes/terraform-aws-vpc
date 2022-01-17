@@ -117,6 +117,7 @@ fabric.properties
 # .tfavrs files
 *.tfvars
 *.tfavrs.*
+.terraform.lock.hcl
 
 # Crash log files
 crash.log
