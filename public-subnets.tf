@@ -18,7 +18,7 @@ resource "aws_subnet" "public" {
   availability_zone       = element(local.availability_zones, count.index)
   vpc_id                  = join("", aws_vpc._.*.id)
   map_public_ip_on_launch = var.map_public_ip_on_lunch
-  tags = merge(module.public_label.tags, tomap({ "VPC" = join("", aws_vpc._.*.id),
+  tags = merge(module.public_label.tags, var.additional_public_subnet_tags,tomap({ "VPC" = join("", aws_vpc._.*.id),
     "Availability Zone" = length(var.azs_list_names) > 0 ? element(var.azs_list_names, count.index) : element(data.aws_availability_zones.azs.names, count.index),
     "Name" = join(module.public_label.delimiter, [module.public_label.id, local.az_map_list_short[local.availability_zones[count.index]]]) }
   ))

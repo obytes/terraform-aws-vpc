@@ -14,5 +14,13 @@ module "example1" {
     Managed = "Terraform"
     Default = "Yes"
   }
+  additional_public_subnet_tags = {
+    "kubernetes.io/cluster/cluster-name" = "shared"
+    "kubernetes.io/role/elb"              = 1
+  }
+  additional_private_subnet_tags = {
+    "kubernetes.io/cluster/cluster-name" = "shared"
+    "kubernetes.io/role/internal-elb"     = 1
+  }
 
 }

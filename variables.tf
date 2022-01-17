@@ -217,6 +217,18 @@ variable "additional_private_route_tags" {
   description = "Additional, map of tags to be added to the private `aws_route_table` tags"
 }
 
+variable "additional_private_subnet_tags" {
+  type        = map(string)
+  default     = null
+  description = "Additional, map of tags to be added to the private `aws_subnet` resources"
+}
+
+variable "additional_public_subnet_tags" {
+  type        = map(string)
+  default     = null
+  description = "Additional, map of tags to be added to the private `aws_subnets` resources"
+}
+
 variable "route_create_timeout" {
   type        = string
   default     = "5m"
