@@ -268,3 +268,15 @@ variable "vpc_dhcp_netbios_node_type" {
   default     = null
   description = "(Optional) The NetBIOS node type (1, 2, 4, or 8). AWS recommends to specify 2 since broadcast and multicast are not supported in their network. For more information about these node types, see RFC 2132."
 }
+
+variable "tgw_route_table_id" {
+  type = string
+  default = null
+  description = "Transit GW route table ID to be added as a destination for the VPC route tables"
+}
+
+variable "transit_routes" {
+  type = list(string)
+  default = []
+  description = "The destination prefixes (CIDR blocks) that should be forwarded to transit gateway"
+}
