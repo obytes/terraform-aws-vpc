@@ -46,6 +46,19 @@ resource "aws_route" "public_internet_gateway" {
   }
 }
 
+resource "aws_route" "transit_gw_route" {
+  count = local.enabled && var.enable_nat_gateway && var.tgw_route_table_id != null ? length(var.transit_routes) : 0
+
+  route_table_id         = element(aws_route_table.public.*.id, count.index)
+  destination_cidr_block = element(var.transit_routes,count.index )
+  transit_gateway_id         = var.tgw_route_table_id
+
+  timeouts {
+    create = var.route_create_timeout
+    delete = var.route_delete_timeout
+  }
+}
+
 resource "aws_route_table_association" "public" {
   count          = local.enabled && local.public_subnet_count > 0 ? local.public_subnet_count : 0
   route_table_id = aws_route_table.public[0].id

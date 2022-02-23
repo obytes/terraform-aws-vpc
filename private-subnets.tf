@@ -45,6 +45,19 @@ resource "aws_route" "private_nat_gateway" {
   }
 }
 
+resource "aws_route" "transit_gw_route" {
+  count = local.enabled && var.enable_nat_gateway && var.tgw_route_table_id != null ? length(var.transit_routes) : 0
+
+  route_table_id         = element(aws_route_table.private.*.id, count.index)
+  destination_cidr_block = element(var.transit_routes,count.index )
+  transit_gateway_id         = var.tgw_route_table_id
+
+  timeouts {
+    create = var.route_create_timeout
+    delete = var.route_delete_timeout
+  }
+}
+
 resource "aws_route_table_association" "private" {
   count          = local.enabled && local.private_subnet_count > 0 ? local.private_subnet_count : 0
   route_table_id = element(aws_route_table.private.*.id, var.single_nat_gateway ? 0 : count.index)
