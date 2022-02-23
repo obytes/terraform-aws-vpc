@@ -45,7 +45,7 @@ resource "aws_route" "private_nat_gateway" {
   }
 }
 
-resource "aws_route" "transit_gw_route" {
+resource "aws_route" "transit_gw_route_private" {
   count = local.enabled && var.enable_nat_gateway && var.tgw_route_table_id != null ? length(var.transit_routes) : 0
 
   route_table_id         = element(aws_route_table.private.*.id, count.index)
