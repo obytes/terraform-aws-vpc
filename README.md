@@ -186,4 +186,5 @@ A shortcode of the availability group will be appended to the subnet name
 | <a name="output_vpc_cidr_block"></a> [vpc\_cidr\_block](#output\_vpc\_cidr\_block) | CIDR Block of the VPC |
 | <a name="output_vpc_dhcp_dns_list"></a> [vpc\_dhcp\_dns\_list](#output\_vpc\_dhcp\_dns\_list) | n/a |
 | <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | VPC ID |
-| <a name="output_vpc_sg_id"></a> [vpc\_sg\_id](#output\_vpc\_sg\_id) | n/a |
+| <a name="output_vpc_sg_id"></a> [vpc\_sg\_id](#output\_vpc\_sg\_id) | Default VPC Security Group |
+| <a name="output_vpc_name"></a> [vpc\_name](#output\_vpc\_sg\_id) | VPC Name |
