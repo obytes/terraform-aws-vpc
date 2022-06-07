@@ -63,3 +63,7 @@ output "vpc_sg_id" {
 output "vpc_dhcp_dns_list" {
   value = module.example1.vpc_dhcp_dns_list
 }
+
+output "vpc_name" {
+  value = module.example1.vpc_name
+}

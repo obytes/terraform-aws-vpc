@@ -13,7 +13,7 @@ Below is an example how to call and use the module, kindly check the example fol
 
 ```hcl 
 module "example1" {
-  source                  = "github.com/obytes/terraform-aws-vpc.git?ref=v1.0.4"
+  source                  = "github.com/obytes/terraform-aws-vpc.git?ref=v1.0.6"
   environment             = "qa"
   project_name            = "on-cost"
   region                  = "eu-west-2"

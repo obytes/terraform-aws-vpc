@@ -58,6 +58,11 @@ output "vpc_id" {
   description = "VPC ID"
 }
 
+output "vpc_name" {
+  value       = aws_vpc._.*.tags.Name
+  description = "VPC NAME"
+}
+
 output "vpc_sg_id" {
   value = aws_default_security_group._.*.id
 }
