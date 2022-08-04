@@ -270,13 +270,13 @@ variable "vpc_dhcp_netbios_node_type" {
 }
 
 variable "tgw_route_table_id" {
-  type = string
-  default = null
+  type        = string
+  default     = null
   description = "Transit GW route table ID to be added as a destination for the VPC route tables"
 }
 
 variable "transit_routes" {
-  type = list(string)
-  default = []
+  type        = list(string)
+  default     = []
   description = "The destination prefixes (CIDR blocks) that should be forwarded to transit gateway"
 }

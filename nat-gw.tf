@@ -6,7 +6,7 @@ locals {
 }
 
 module "nat_label" {
-  source     = "github.com/obytes/terraform-aws-tag.git?ref=v1.0.5"
+  source     = "github.com/obytes/terraform-aws-tag.git?ref=v1.0.6"
   attributes = ["nat"]
   context    = module.label.context
 }

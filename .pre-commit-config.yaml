@@ -1,13 +1,21 @@
 repos:
-    - repo: git://github.com/antonbabenko/pre-commit-terraform
-      rev: v1.72.1
-      hooks:
-        - id: terraform_fmt
-        - id: terraform_docs
-        - id: terraform_tflint
-    - repo: git://github.com/pre-commit/pre-commit-hooks
-      rev: v4.2.0
-      hooks:
-        - id: check-merge-conflict
-        - id: end-of-file-fixer
-        - id: check-yaml
+  - repo: git://github.com/pre-commit/pre-commit-hooks
+    rev: v4.0.1 # https://github.com/pre-commit/pre-commit-hooks/releases
+    hooks:
+      - id: check-added-large-files
+      - id: check-case-conflict
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: check-yaml
+        args: ["--unsafe"]
+      - id: detect-aws-credentials
+        args: ["--allow-missing-credentials"]
+      - id: detect-private-key
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+        args: ["--markdown-linebreak-ext=md"]
+  - repo: git://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.50.0 # https://github.com/antonbabenko/pre-commit-terraform/releases
+    hooks:
+      - id: terraform_fmt

@@ -2,7 +2,7 @@ locals {
   private_subnet_count = var.create_private_subnets && var.max_subnet_count == 0 && length(flatten(var.azs_list_names)) == 0 ? length(flatten(data.aws_availability_zones.azs.names)) : var.create_private_subnets && length(flatten(var.azs_list_names)) > 0 ? length(flatten(var.azs_list_names)) : var.create_private_subnets && var.max_subnet_count != 0 ? var.max_subnet_count : var.create_private_subnets && var.include_all_azs ? length(flatten(data.aws_availability_zones.azs.names)) : 0
 }
 module "private_label" {
-  source     = "github.com/obytes/terraform-aws-tag.git?ref=v1.0.5"
+  source     = "github.com/obytes/terraform-aws-tag.git?ref=v1.0.6"
   attributes = ["prv"]
   context    = module.label.context
 }
@@ -15,7 +15,7 @@ resource "aws_subnet" "private" {
   count.index)
   availability_zone = element(local.availability_zones, count.index)
   vpc_id            = join("", aws_vpc._.*.id)
-  tags = merge(module.private_label.tags, var.additional_private_subnet_tags,tomap({ "VPC" = join("", aws_vpc._.*.id),
+  tags = merge(module.private_label.tags, var.additional_private_subnet_tags, tomap({ "VPC" = join("", aws_vpc._.*.id),
     "Availability Zone" = length(var.azs_list_names) > 0 ? element(var.azs_list_names, count.index) : element(data.aws_availability_zones.azs.names, count.index),
     "Name" = join(module.private_label.delimiter, [module.private_label.id, local.az_map_list_short[local.availability_zones[count.index]]]) }
   ))
@@ -49,8 +49,8 @@ resource "aws_route" "transit_gw_route_private" {
   count = local.enabled && var.enable_nat_gateway && var.tgw_route_table_id != null ? length(var.transit_routes) : 0
 
   route_table_id         = element(aws_route_table.private.*.id, count.index)
-  destination_cidr_block = element(var.transit_routes,count.index )
-  transit_gateway_id         = var.tgw_route_table_id
+  destination_cidr_block = element(var.transit_routes, count.index)
+  transit_gateway_id     = var.tgw_route_table_id
 
   timeouts {
     create = var.route_create_timeout
