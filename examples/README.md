@@ -1,8 +1,8 @@
 ## USAGE
 
-```hcl 
+```hcl
 module "example1" {
-  source                  = "github.com/obytes/terraform-aws-vpc.git?ref=v1.0.2"
+  source                  = "github.com/obytes/terraform-aws-vpc.git?ref=v1.0.7"
   environment             = "qa"
   project_name            = "on-cost"
   cidr_block              = "172.16.0.0/18"

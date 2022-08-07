@@ -23,5 +23,5 @@ module "example1" {
     "kubernetes.io/cluster/cluster-name" = "shared"
     "kubernetes.io/role/internal-elb"    = 1
   }
-  prefix_length_limit = 10
+  prefix_length_limit = 14
 }
