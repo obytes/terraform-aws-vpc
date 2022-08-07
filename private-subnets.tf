@@ -1,11 +1,6 @@
 locals {
   private_subnet_count = var.create_private_subnets && var.max_subnet_count == 0 && length(flatten(var.azs_list_names)) == 0 ? length(flatten(data.aws_availability_zones.azs.names)) : var.create_private_subnets && length(flatten(var.azs_list_names)) > 0 ? length(flatten(var.azs_list_names)) : var.create_private_subnets && var.max_subnet_count != 0 ? var.max_subnet_count : var.create_private_subnets && var.include_all_azs ? length(flatten(data.aws_availability_zones.azs.names)) : 0
 }
-module "private_label" {
-  source     = "github.com/obytes/terraform-aws-tag.git?ref=v1.0.6"
-  attributes = ["prv"]
-  context    = module.label.context
-}
 
 resource "aws_subnet" "private" {
   count = local.private_subnet_count
@@ -15,9 +10,9 @@ resource "aws_subnet" "private" {
   count.index)
   availability_zone = element(local.availability_zones, count.index)
   vpc_id            = join("", aws_vpc._.*.id)
-  tags = merge(module.private_label.tags, var.additional_private_subnet_tags, tomap({ "VPC" = join("", aws_vpc._.*.id),
+  tags = merge(module.label.tags, var.additional_private_subnet_tags, tomap({ "VPC" = join("", aws_vpc._.*.id),
     "Availability Zone" = length(var.azs_list_names) > 0 ? element(var.azs_list_names, count.index) : element(data.aws_availability_zones.azs.names, count.index),
-    "Name" = join(module.private_label.delimiter, [module.private_label.id, local.az_map_list_short[local.availability_zones[count.index]]]) }
+    "Name" = join(module.label.delimiter, [module.label.id, local.az_map_list_short[local.availability_zones[count.index]]]) }
   ))
 }
 
@@ -26,7 +21,7 @@ resource "aws_route_table" "private" {
   count  = local.enabled && local.private_subnet_count > 0 ? local.nat_gateway_count : 0
   vpc_id = aws_vpc._[count.index].id
 
-  tags = merge(module.private_label.tags, tomap({ "Name" = join(module.private_label.delimiter, [module.private_label.id, "route", count.index]) }),
+  tags = merge(module.label.tags, tomap({ "Name" = join(module.label.delimiter, [module.label.id, "route", count.index]) }),
     var.additional_private_route_tags
   )
 

@@ -2,6 +2,8 @@ module "example1" {
   source                  = "../"
   project_name            = "pto"
   region                  = "eu-west-2"
+  name                    = "vpc"
+  environment             = "prd"
   cidr_block              = "172.16.0.0/18"
   enable_dns_hostnames    = true
   enable_nat_gateway      = true
@@ -21,5 +23,5 @@ module "example1" {
     "kubernetes.io/cluster/cluster-name" = "shared"
     "kubernetes.io/role/internal-elb"    = 1
   }
-
+  prefix_length_limit = 10
 }
