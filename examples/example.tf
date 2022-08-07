@@ -1,8 +1,9 @@
 module "example1" {
   source                  = "../"
-  environment             = "qa"
-  project_name            = "on-cost"
+  project_name            = "pto"
   region                  = "eu-west-2"
+  name                    = "vpc"
+  environment             = "prd"
   cidr_block              = "172.16.0.0/18"
   enable_dns_hostnames    = true
   enable_nat_gateway      = true
@@ -16,11 +17,11 @@ module "example1" {
   }
   additional_public_subnet_tags = {
     "kubernetes.io/cluster/cluster-name" = "shared"
-    "kubernetes.io/role/elb"              = 1
+    "kubernetes.io/role/elb"             = 1
   }
   additional_private_subnet_tags = {
     "kubernetes.io/cluster/cluster-name" = "shared"
-    "kubernetes.io/role/internal-elb"     = 1
+    "kubernetes.io/role/internal-elb"    = 1
   }
-
+  prefix_length_limit = 14
 }

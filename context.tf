@@ -1,8 +1,9 @@
 module "label" {
-  source                 = "github.com/obytes/terraform-aws-tag.git?ref=v1.0.5"
+  source                 = "github.com/obytes/terraform-aws-tag.git?ref=v1.0.7"
   environment            = var.environment
   project_name           = var.project_name
   region                 = var.region
+  name                   = var.name
   delimiter              = var.delimiter
   attributes             = var.attributes
   enabled                = var.enabled

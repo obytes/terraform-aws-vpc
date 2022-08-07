@@ -6,11 +6,6 @@ locals {
   availability_zones            = length(var.azs_list_names) > 0 ? var.azs_list_names : data.aws_availability_zones.azs.names
 }
 
-module "vpc_label" {
-  source     = "github.com/obytes/terraform-aws-tag.git?ref=v1.0.5"
-  attributes = ["vpc"]
-  context    = module.label.context
-}
 
 resource "aws_vpc" "_" {
   count                            = local.enabled ? 1 : 0
@@ -18,7 +13,7 @@ resource "aws_vpc" "_" {
   enable_dns_hostnames             = var.enable_dns_hostnames
   enable_dns_support               = var.enable_dns_support
   assign_generated_ipv6_cidr_block = var.enable_ipv6_cidr_block
-  tags                             = module.vpc_label.tags
+  tags                             = module.label.tags
 }
 
 resource "aws_default_security_group" "_" {
@@ -61,7 +56,7 @@ resource "aws_default_security_group" "_" {
 resource "aws_internet_gateway" "_" {
   count  = local.internet_gateway_count
   vpc_id = aws_vpc._[count.index].id
-  tags   = merge(module.vpc_label.tags, tomap({ "VPC" = aws_vpc._[count.index].id, "Type" = "internet Gateway" }))
+  tags   = merge(module.label.tags, tomap({ "VPC" = aws_vpc._[count.index].id, "Type" = "internet Gateway" }))
 }
 
 resource "aws_default_route_table" "_" {
@@ -84,7 +79,7 @@ resource "aws_default_route_table" "_" {
     }
   }
 
-  tags = merge(module.vpc_label.tags, tomap({ "Name" = join(module.vpc_label.delimiter, [module.vpc_label.id, "default-route"]) }),
+  tags = merge(module.label.tags, tomap({ "Name" = join(module.label.delimiter, [module.label.id, "default-route"]) }),
     var.additional_default_route_table_tags
   )
 }
@@ -97,7 +92,7 @@ resource "aws_vpc_dhcp_options" "_" {
   netbios_name_servers = var.vpc_dhcp_netbios_name_servers
   netbios_node_type    = var.vpc_dhcp_netbios_node_type
 
-  tags = merge(module.vpc_label.tags, tomap({ "Name" = join(module.vpc_label.delimiter, [module.vpc_label.id, "dhcp-ops"]) }))
+  tags = merge(module.label.tags, tomap({ "Name" = join(module.label.delimiter, [module.label.id, "dhcp-ops"]) }))
 }
 
 resource "aws_vpc_dhcp_options_association" "dhcp-assoc" {

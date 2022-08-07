@@ -1,4 +1,4 @@
-# Terraform AWS VPC 
+# Terraform AWS VPC
 
 ## SUMMARY
 A Terraform module to create AWS VPC along with its resources:
@@ -11,9 +11,9 @@ A Terraform module to create AWS VPC along with its resources:
 
 Below is an example how to call and use the module, kindly check the example folder for more detailed output
 
-```hcl 
+```hcl
 module "example1" {
-  source                  = "github.com/obytes/terraform-aws-vpc.git?ref=v1.0.6"
+  source                  = "github.com/obytes/terraform-aws-vpc.git?ref=v1.0.7"
   environment             = "qa"
   project_name            = "on-cost"
   region                  = "eu-west-2"
@@ -50,17 +50,17 @@ A shortcode of the availability group will be appended to the subnet name
     - NAT Gateway per AZ
       - `enable_nat_gateway` is set to true
       - `single_nat_gateway` is set to false
-      - `nat_gateway_per_az` is set to true 
- 
+      - `nat_gateway_per_az` is set to true
+
  >Note: if `single_nat_gateway` and `nat_gateway_per_az` are both set to true, `single_nat_gateway` takes precedence.
- 
+
  - AWS EIPs (Elastic_IPs)
-   - Create New EIPs - Default Scenario 
+   - Create New EIPs - Default Scenario
      -  `var.nat_eips_list` is empty
    - Re-use Existing EIPs
      - `var.nat_eips_list` is populated with alist of elastic_ips from your AWS account.
- 
- - Subnet Count 
+
+ - Subnet Count
     - Subnet / AZ - Default Scenario
       - `enable_private_subnet` or `var.enable_public_subnet` is set to true
       - `var.max_subnet_count` is set to 0
