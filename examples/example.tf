@@ -1,9 +1,17 @@
+module "label" {
+  source              = "github.com/obytes/terraform-aws-tag.git?ref=v1.0.7"
+  project_name        = "pto"
+  region              = "eu-west-2"
+  environment         = "qa"
+  prefix_length_limit = 12
+}
+
 module "example1" {
   source                  = "../"
-  project_name            = "pto"
-  region                  = "eu-west-2"
+  enabled                 = true
+  prefix                  = module.label.id
   name                    = "vpc"
-  environment             = "prd"
+  additional_tags         = module.label.tags
   cidr_block              = "172.16.0.0/18"
   enable_dns_hostnames    = true
   enable_nat_gateway      = true
@@ -23,5 +31,4 @@ module "example1" {
     "kubernetes.io/cluster/cluster-name" = "shared"
     "kubernetes.io/role/internal-elb"    = 1
   }
-  prefix_length_limit = 14
 }

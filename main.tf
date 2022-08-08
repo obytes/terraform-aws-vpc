@@ -1,9 +1,10 @@
 locals {
-  enabled                       = module.label.enabled
+  enabled                       = var.enabled
   internet_gateway_count        = var.enable_internet_gateway && local.enabled && var.create_public_subnets ? 1 : 0
   custom_default_security_group = var.create_custom_security_group && local.enabled ? true : false
   az_name_list                  = length(flatten(var.azs_list_names)) > 0 ? var.azs_list_names : data.aws_availability_zones.azs.names
   availability_zones            = length(var.azs_list_names) > 0 ? var.azs_list_names : data.aws_availability_zones.azs.names
+  name                          = var.name != null ? join("-", [var.prefix, var.name]) : var.prefix
 }
 
 
@@ -13,14 +14,14 @@ resource "aws_vpc" "_" {
   enable_dns_hostnames             = var.enable_dns_hostnames
   enable_dns_support               = var.enable_dns_support
   assign_generated_ipv6_cidr_block = var.enable_ipv6_cidr_block
-  tags                             = module.label.tags
+  tags                             = merge(var.additional_tags, tomap({ Name = local.name }))
 }
 
 resource "aws_default_security_group" "_" {
   count  = local.custom_default_security_group ? 1 : 0
   vpc_id = aws_vpc._[count.index].id
 
-  tags = merge(module.label.tags, tomap({ "Type" = "Default Security Group", "VPC" = join("", aws_vpc._.*.id) }))
+  tags = merge(var.additional_tags, tomap({ "Type" = "Default Security Group", "VPC" = join("", aws_vpc._.*.id), "Name" = local.name }))
 
   dynamic "ingress" {
     for_each = var.default_security_group_ingress
@@ -56,7 +57,7 @@ resource "aws_default_security_group" "_" {
 resource "aws_internet_gateway" "_" {
   count  = local.internet_gateway_count
   vpc_id = aws_vpc._[count.index].id
-  tags   = merge(module.label.tags, tomap({ "VPC" = aws_vpc._[count.index].id, "Type" = "internet Gateway" }))
+  tags   = merge(var.additional_tags, tomap({ "VPC" = aws_vpc._[count.index].id, "Type" = "internet Gateway", "Name" = local.name }))
 }
 
 resource "aws_default_route_table" "_" {
@@ -79,7 +80,7 @@ resource "aws_default_route_table" "_" {
     }
   }
 
-  tags = merge(module.label.tags, tomap({ "Name" = join(module.label.delimiter, [module.label.id, "default-route"]) }),
+  tags = merge(var.additional_tags, tomap({ "Name" = local.name }),
     var.additional_default_route_table_tags
   )
 }
@@ -92,7 +93,7 @@ resource "aws_vpc_dhcp_options" "_" {
   netbios_name_servers = var.vpc_dhcp_netbios_name_servers
   netbios_node_type    = var.vpc_dhcp_netbios_node_type
 
-  tags = merge(module.label.tags, tomap({ "Name" = join(module.label.delimiter, [module.label.id, "dhcp-ops"]) }))
+  tags = merge(var.additional_tags, tomap({ "Name" = join("-", [local.name, "dhcp-ops"]) }))
 }
 
 resource "aws_vpc_dhcp_options_association" "dhcp-assoc" {

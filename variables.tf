@@ -1,7 +1,36 @@
+#=============#
+#   Label     #
+#=============#
+
+variable "prefix" {
+  type        = string
+  description = <<-EOL
+  String or prefix that would be used to tag/Name all the resources created by this module, this prefix will be generated
+  by obytes/terraform-aws-tag public module
+  EOL
+}
+
+variable "name" {
+  type        = string
+  default     = null
+  description = "The name of the service/solution such as vpc, ec2 that would be append to the prefix"
+}
+
+variable "additional_tags" {
+  type        = map(string)
+  default     = {}
+  description = "Additional Tags, tags which can be accessed by module.<name>.tags_as_list not added to <module>.<name>.<tags>"
+}
 
 #=============#
 #   V P C     #
 #=============#
+
+variable "enabled" {
+  type        = string
+  default     = true
+  description = "A boolean to enable or disable creation of VPC resources"
+}
 
 variable "include_all_azs" {
   type        = bool
