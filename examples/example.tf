@@ -1,8 +1,10 @@
 module "label" {
-  source              = "github.com/obytes/terraform-aws-tag.git?ref=v1.0.7"
+  source              = "github.com/obytes/terraform-aws-tag.git?ref=v1.0.8"
   project_name        = "pto"
   region              = "eu-west-2"
   environment         = "qa"
+  company_name        = "genius"
+  prefix_order        = ["project_name", "company_name", "environment"]
   prefix_length_limit = 12
 }
 
@@ -10,6 +12,7 @@ module "example1" {
   source                  = "../"
   enabled                 = true
   prefix                  = module.label.id
+  delimiter               = module.label.delimiter
   name                    = "vpc"
   additional_tags         = module.label.tags
   cidr_block              = "172.16.0.0/18"

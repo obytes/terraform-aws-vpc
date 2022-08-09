@@ -4,7 +4,8 @@ locals {
   custom_default_security_group = var.create_custom_security_group && local.enabled ? true : false
   az_name_list                  = length(flatten(var.azs_list_names)) > 0 ? var.azs_list_names : data.aws_availability_zones.azs.names
   availability_zones            = length(var.azs_list_names) > 0 ? var.azs_list_names : data.aws_availability_zones.azs.names
-  name                          = var.name != null ? join("-", [var.prefix, var.name]) : var.prefix
+  name                          = var.name != null ? join(var.delimiter, [var.prefix, var.name]) : var.prefix
+  delimiter                     = var.delimiter != null ? var.delimiter : "-"
 }
 
 
@@ -93,7 +94,7 @@ resource "aws_vpc_dhcp_options" "_" {
   netbios_name_servers = var.vpc_dhcp_netbios_name_servers
   netbios_node_type    = var.vpc_dhcp_netbios_node_type
 
-  tags = merge(var.additional_tags, tomap({ "Name" = join("-", [local.name, "dhcp-ops"]) }))
+  tags = merge(var.additional_tags, tomap({ "Name" = join(local.delimiter, [local.name, "dhcp-ops"]) }))
 }
 
 resource "aws_vpc_dhcp_options_association" "dhcp-assoc" {

@@ -22,6 +22,16 @@ variable "additional_tags" {
   description = "Additional Tags, tags which can be accessed by module.<name>.tags_as_list not added to <module>.<name>.<tags>"
 }
 
+variable "delimiter" {
+  type    = string
+  default = null
+
+  description = <<-EOL
+    Delimiter to be used between `project_name`, `environment`, `region` and, `name`.
+    Defaults to `-` (hyphen). Set to `""` to use no delimiter at all.
+  EOL
+}
+
 #=============#
 #   V P C     #
 #=============#
