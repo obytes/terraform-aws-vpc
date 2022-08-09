@@ -13,7 +13,7 @@ Below is an example how to call and use the module, kindly check the example fol
 
 ```hcl
 module "label" {
-  source              = "github.com/obytes/terraform-aws-tag.git?ref=v1.0.7"
+  source              = "github.com/obytes/terraform-aws-tag.git?ref=v1.0.8"
   project_name        = "pto"
   region              = "eu-west-2"
   environment         = "qa"
@@ -21,7 +21,7 @@ module "label" {
 }
 
 module "example1" {
-  source                  = "github.com/obytes/terraform-aws-vpc.git?ref=v1.0.8"
+  source                  = "github.com/obytes/terraform-aws-vpc.git?ref=v1.0.9"
   enabled                 = true
   prefix                  = module.label.id
   name                    = "vpc"
