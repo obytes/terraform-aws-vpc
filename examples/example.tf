@@ -13,6 +13,7 @@ module "example1" {
   enabled                 = true
   prefix                  = module.label.id
   delimiter               = module.label.delimiter
+  name                    = "vpc"
   additional_tags         = module.label.tags
   cidr_block              = "172.16.0.0/18"
   enable_dns_hostnames    = true
