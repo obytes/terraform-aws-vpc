@@ -7,7 +7,7 @@ locals {
 
 
 resource "aws_eip" "_" {
-  count = local.enabled ? local.nat_gateway_eip_count : 0
+  count = local.enabled && var.enable_nat_gateway ? 1 : local.enabled && local.nat_instance_enabled ? 1 : 0
   vpc   = true
   tags  = merge(var.additional_tags, tomap({ "Name" = join(local.delimiter, [local.name, count.index]) }))
 }
