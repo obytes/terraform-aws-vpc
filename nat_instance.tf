@@ -90,6 +90,7 @@ resource "aws_instance" "nat_instance" {
   associate_public_ip_address = true
 
   ebs_optimized = true
+  key_name      = join("-", [local.name, "key"])
 }
 
 resource "aws_eip_association" "nat_instance" {
