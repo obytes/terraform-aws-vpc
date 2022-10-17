@@ -21,7 +21,7 @@ module "label" {
 }
 
 module "example1" {
-  source                  = "github.com/obytes/terraform-aws-vpc.git?ref=v1.0.9"
+  source                  = "github.com/obytes/terraform-aws-vpc.git?ref=v1.0.10"
   enabled                 = true
   prefix                  = module.label.id
   name                    = "vpc"

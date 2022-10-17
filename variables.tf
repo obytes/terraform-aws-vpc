@@ -59,8 +59,54 @@ variable "azs_list_names" {
 
 variable "enable_nat_gateway" {
   type        = bool
+  description = <<-EOT
+    Set `true` to create NAT Gateways to perform IPv4 NAT and NAT64 as needed.
+    Defaults to `true` unless `nat_instance_enabled` is `true`.
+    EOT
+  default     = null
+}
+
+############## NAT instance configuration ###################
+variable "nat_instance_type" {
+  type        = string
+  description = "NAT Instance type"
+  default     = "t3.micro"
+}
+
+variable "nat_instance_enabled" {
+  type        = bool
+  description = <<-EOT
+    Set `true` to create NAT Instances to perform IPv4 NAT.
+    Defaults to `false`.
+    EOT
+  default     = null
+}
+
+variable "private_subnets_enabled" {
+  type        = bool
+  description = "If false, do not create private subnets (or NAT gateways or instances)"
   default     = true
-  description = "Should be true if you want to provision NAT Gateways for each of your private networks"
+}
+
+variable "ipv4_enabled" {
+  type        = bool
+  description = "Set `true` to enable IPv4 addresses in the subnets"
+  default     = true
+}
+
+variable "nat_instance_ami_id" {
+  type        = list(string)
+  description = <<-EOT
+    A list optionally containing the ID of the AMI to use for the NAT instance.
+    If the list is empty (the default), the latest official AWS NAT instance AMI
+    will be used. NOTE: The Official NAT instance AMI is being phased out and
+    does not support NAT64. Use of a NAT gateway is recommended instead.
+    EOT
+  default     = []
+  validation {
+    condition     = length(var.nat_instance_ami_id) < 2
+    error_message = "Only 1 NAT Instance AMI ID can be provided."
+  }
 }
 
 variable "single_nat_gateway" {

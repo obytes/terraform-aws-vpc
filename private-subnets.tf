@@ -18,7 +18,7 @@ resource "aws_subnet" "private" {
 
 # There are as many route_table as local.nat_gateway_count
 resource "aws_route_table" "private" {
-  count  = local.enabled && local.private_subnet_count > 0 ? local.nat_gateway_count : 0
+  count  = local.enabled && local.private_subnet_count > 0 ? 1 : 0
   vpc_id = aws_vpc._[count.index].id
 
   tags = merge(var.additional_tags, tomap({ "Name" = join(local.delimiter, [local.name, "prv-route", count.index]) }),
